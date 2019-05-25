@@ -83,7 +83,7 @@ spec:
         - name: ELASTICSEARCH_USERNAME
           value: elastic
         - name: ELASTICSEARCH_PASSWORD
-          value: x4chvbxfb7vjrv47ft7zpnxf
+          value: wg5ddkt5fxkbhqzz6hqxdv9h 
         # - name: ELASTIC_CLOUD_ID
         #   value:
         # - name: ELASTIC_CLOUD_AUTH
@@ -133,7 +133,7 @@ spec:
           type: DirectoryOrCreate
       - name: ca-pem
         secret:
-          secretName: quickstart-es-dl64j9wtqq-certs
+          secretName: quickstart-es-c5v56vnrtv-certs 
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding

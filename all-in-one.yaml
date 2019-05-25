@@ -1240,4 +1240,42 @@ metadata:
   namespace: elastic-system
 
 ---
-
+kind: Service
+apiVersion: v1
+metadata:
+  name: quickstart-es-external
+  namespace: default
+  labels:
+    common.k8s.elastic.co/type: elasticsearch
+    elasticsearch.k8s.elastic.co/cluster-name: quickstart
+spec:
+  ports:
+    - name: https
+      protocol: TCP
+      port: 9200
+      targetPort: 9200
+  selector:
+    common.k8s.elastic.co/type: elasticsearch
+    elasticsearch.k8s.elastic.co/cluster-name: quickstart
+  type: LoadBalancer
+  sessionAffinity: None
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: quickstart-kibana-ex
+  namespace: default
+  labels:
+    common.k8s.elastic.co/type: kibana
+    kibana.k8s.elastic.co/name: quickstart
+spec:
+  ports:
+    - protocol: TCP
+      port: 5601
+      targetPort: 5601
+  selector:
+    common.k8s.elastic.co/type: kibana
+    kibana.k8s.elastic.co/name: quickstart
+  type: LoadBalancer
+  sessionAffinity: None
+---
