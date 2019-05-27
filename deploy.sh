@@ -31,7 +31,13 @@ spec:
     name: quickstart
 EOF
 
+echo "sleeping 2 minutes, then opening Kibana"
+sleep 120s
+
 PASSWORD=$(kubectl get secret quickstart-elastic-user -o=jsonpath='{.data.elastic}' | base64 --decode)
 
-echo $PASSWORD
+echo "username is: elastic" 
+echo "password is:" $PASSWORD
+minikube service quickstart-kibana-ex
+
 

@@ -119,7 +119,7 @@ spec:
         - name: ELASTICSEARCH_USERNAME
           value: elastic
         - name: ELASTICSEARCH_PASSWORD
-          value: "wg5ddkt5fxkbhqzz6hqxdv9h"
+          value: "2fv8276lvpk7rwth4txrpmb7"
         # - name: ELASTIC_CLOUD_ID
         #   value:
         # - name: ELASTIC_CLOUD_AUTH
@@ -179,7 +179,7 @@ spec:
           type: DirectoryOrCreate
       - name: ca-pem
         secret:
-          secretName: quickstart-es-c5v56vnrtv-certs 
+          secretName: quickstart-es-wbmvbn27rh-certs 
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -263,7 +263,7 @@ spec:
         - name: ELASTICSEARCH_USERNAME
           value: elastic
         - name: ELASTICSEARCH_PASSWORD
-          value: wg5ddkt5fxkbhqzz6hqxdv9h 
+          value: 2fv8276lvpk7rwth4txrpmb7 
         # - name: ELASTIC_CLOUD_ID
         #   value:
         # - name: ELASTIC_CLOUD_AUTH
@@ -302,7 +302,7 @@ spec:
           name: metricbeat-deployment-modules
       - name: ca-pem
         secret:
-          secretName: quickstart-es-c5v56vnrtv-certs 
+          secretName: quickstart-es-wbmvbn27rh-certs
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
