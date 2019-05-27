@@ -92,6 +92,7 @@ data:
     @include "#{ENV['FLUENTD_SYSTEMD_CONF'] || 'systemd'}.conf"
     @include "#{ENV['FLUENTD_PROMETHEUS_CONF'] || 'prometheus'}.conf"
     @include kubernetes.conf
+    @include nodes.conf
     @include conf.d/*.conf
 
     <match **>
@@ -303,6 +304,17 @@ data:
       @id filter_kube_metadata
     </filter>
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluentd-nodes-config
+  namespace: default
+  labels:
+    k8s-app: fluentd-logging
+data:
+  nodes.conf: |-
+    this is a test
+---
 apiVersion: extensions/v1beta1
 kind: DaemonSet
 metadata:
@@ -372,7 +384,10 @@ spec:
         - name: agent-config
           mountPath: /fluentd/etc/fluent.conf
           readOnly: true
-          subPath: fluent.conf
+        - name: nodes-config
+          mountPath: /fluentd/etc/nodes.conf
+          readOnly: true
+          subPath: nodes.conf
         - name: varlog
           mountPath: /var/log
         - name: varlibdockercontainers
@@ -387,6 +402,10 @@ spec:
         configMap:
           defaultMode: 0600
           name: fluentd-kubernetes-config
+      - name: nodes-config
+        configMap:
+          defaultMode: 0600
+          name: fluentd-nodes-config
       - name: agent-config
         configMap:
           defaultMode: 0600
