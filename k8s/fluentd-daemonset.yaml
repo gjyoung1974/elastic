@@ -323,10 +323,10 @@ data:
       @type tail
       path /var/log/vmware-vmsvc.log
       pos_file /var/log/vmware-vmsvc.log.pos
-      <parse>
-        @type syslog
-      </parse>
       tag vmware.vmsvc.stuff
+      <parse>
+        @type none
+      </parse>
     </source>
 
 ---
