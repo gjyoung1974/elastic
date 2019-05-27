@@ -33,8 +33,8 @@ spec:
 EOF
 
 # 4. get password and open Kibana dashboard
-echo "sleeping 2 minutes, then opening Kibana"
-sleep 120s
+echo "sleeping 3  minutes, then opening Kibana"
+sleep 180s
 
 PASSWORD=$(kubectl get secret quickstart-elastic-user -o=jsonpath='{.data.elastic}' | base64 --decode)
 
