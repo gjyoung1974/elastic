@@ -304,8 +304,7 @@ data:
       @id filter_kube_metadata
     </filter>
 ---
-# Allow customizing fluentd configs
-# todo: add */conf.d/* additional configs
+# Capture node security relevant logs
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -319,13 +318,68 @@ data:
       @type null
     </match>
 
-    <source>
-      @type tail
-      path /var/log/vmware-vmsvc.log
-      pos_file /var/log/vmware-vmsvc.log.pos
-      tag vmware.vmsvc.stuff
+    # auth log
+    <source> 
+      @type tail 
+      path /var/log/auth.log 
+      pos_file /var/log/auth.pos 
+      tag authlog
       <parse>
-        @type none
+        @type syslog
+        message_format rfc3164
+        with_priority false
+      </parse>
+    </source>
+
+    # daemon log
+    <source> 
+      @type tail 
+      path /var/log/daemon.log
+      pos_file /var/log/daemon.log.pos 
+      tag daemonlog
+      <parse>
+        @type syslog
+        message_format rfc3164
+        with_priority false
+      </parse>
+    </source>
+
+    # debug log
+    <source> 
+      @type tail 
+      path /var/log/debug
+      pos_file /var/log/debug.pos 
+      tag debuglog
+      <parse>
+        @type syslog
+        message_format rfc3164
+        with_priority false
+      </parse>
+    </source>
+
+    # kernel log
+    <source> 
+      @type tail
+      path /var/log/kern.log
+      pos_file /var/log/kern.log.pos 
+      tag kernellog
+      <parse>
+        @type syslog
+        message_format rfc3164
+        with_priority false
+      </parse>
+    </source>
+
+    # system log
+    <source> 
+      @type tail
+      path  /var/log/syslog
+      pos_file  /var/log/syslog.pos 
+      tag syslog
+      <parse>
+        @type syslog
+        message_format rfc3164
+        with_priority false
       </parse>
     </source>
 
