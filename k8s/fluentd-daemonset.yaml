@@ -1,5 +1,6 @@
 ---
 # Trust the Elastic Cloud Root CA
+# Include the full chain
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -8,7 +9,7 @@ metadata:
   labels:
     k8s-app: fluentd-logging
 data:
-  elastic-root.pem: |-
+  certs.pem: |-
     -----BEGIN CERTIFICATE-----
     MIIDLTCCAhWgAwIBAgIRAMd5C1xJtm3W6k+3NRKH8b0wDQYJKoZIhvcNAQELBQAw
     MDEZMBcGA1UECxMQd2YyN3p3Mm1ud21oZ2wyaDETMBEGA1UEAxMKcXVpY2tzdGFy
@@ -29,6 +30,100 @@ data:
     VpfUYhEc4X7aY+WiTra5rGXAbiwN9g4L35S6k0lDSUWYnnB7Dfodn0gJuscLEF8V
     vQ==
     -----END CERTIFICATE-----
+    -----BEGIN CERTIFICATE-----
+    MIIEoDCCA4igAwIBAgIQagcCa277zyzzOw5M6tsyZDANBgkqhkiG9w0BAQsFADAw
+    MRkwFwYDVQQLExB3ZjI3encybW53bWhnbDJoMRMwEQYDVQQDEwpxdWlja3N0YXJ0
+    MB4XDTE5MDUyNzE2MDQ1MFoXDTIwMDUyNjE2MTQ1MFowYTETMBEGA1UECxMKcXVp
+    Y2tzdGFydDFKMEgGA1UEAxNBcXVpY2tzdGFydC1lcy01cHJrZGRudnhkLm5vZGUu
+    cXVpY2tzdGFydC5kZWZhdWx0LmVzLmNsdXN0ZXIubG9jYWwwggEiMA0GCSqGSIb3
+    DQEBAQUAA4IBDwAwggEKAoIBAQD5NkMqKaJk3ytrLd7bnj7iIHe27mxlWDyNVERU
+    E87ifpJnHoaKMlHewutxCEJezai9lnZlzEP6DZK8xu+i/l7hKaDD9nXivdKe9B1O
+    yjIzomUEv0AZ9PHTEb20HmAj2Ut+UR/p06j1hhWuBbrh28/m33YMxH9AOCwKN/W9
+    XUztgKED9JL6t3O8veJ3hQE+zLAeo5sCA8jXAxrpRH9uzJ8VvQzqH22TQknBfpA/
+    bAyS50v/fnCserqjS0tiFSx1QPSaVD8D1U8cE/f8wOcOqhDgKUZmDF7fIuYldbKp
+    joQyZaIrsS7zE5PoRBKPvcKAbTK3Wdel0Ex0TEdzd0tYxVfxAgMBAAGjggGDMIIB
+    fzAOBgNVHQ8BAf8EBAMCBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMC
+    MIIBTAYDVR0RBIIBQzCCAT+gSgYDVQQDoEMMQXF1aWNrc3RhcnQtZXMtNXBya2Rk
+    bnZ4ZC5ub2RlLnF1aWNrc3RhcnQuZGVmYXVsdC5lcy5jbHVzdGVyLmxvY2FsgkFx
+    dWlja3N0YXJ0LWVzLTVwcmtkZG52eGQubm9kZS5xdWlja3N0YXJ0LmRlZmF1bHQu
+    ZXMuY2x1c3Rlci5sb2NhbIIYcXVpY2tzdGFydC1lcy01cHJrZGRudnhkhwSsEQAG
+    hwR/AAABhwQKZF5Agg1xdWlja3N0YXJ0LWVzgidxdWlja3N0YXJ0LWVzLmRlZmF1
+    bHQuc3ZjLmNsdXN0ZXIubG9jYWyCF3F1aWNrc3RhcnQtZXMtZGlzY292ZXJ5gjFx
+    dWlja3N0YXJ0LWVzLWRpc2NvdmVyeS5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2Fs
+    MA0GCSqGSIb3DQEBCwUAA4IBAQCMF/slINKEa85/343vmd8t3Ye3AOYn25ZOz1Ly
+    exrMVSE41VUzGqM32xu4KmzZXU/OO6KfIoOdy20Q6vpvwWPliVfH3QRd2wIVQCXG
+    Vzx2f/icpLktjva6elDrykVA+RMbEmsEs4BFRe2uokZyuI9bTqU5PtJrdm97qIVa
+    R3V3PvVY5PCKGPJhe2vjVK2u4aCdlfwI+L9E31tQkag4hTaA69C4Or5eUXnzjudJ
+    MeHnts3N3cQ8k03qQDKdX37IwszWbMWqiEPnfHISV+KHfEbeFBAd6zYUWPyrvet+
+    h56VJ5/8Djke4HRWEjxMVt412I6Of7pvNoyYt7fvofZUeIMG
+    -----END CERTIFICATE-----
+    -----BEGIN CERTIFICATE-----
+    MIIDLTCCAhWgAwIBAgIRAMd5C1xJtm3W6k+3NRKH8b0wDQYJKoZIhvcNAQELBQAw
+    MDEZMBcGA1UECxMQd2YyN3p3Mm1ud21oZ2wyaDETMBEGA1UEAxMKcXVpY2tzdGFy
+    dDAeFw0xOTA1MjcxNjEyNTFaFw0yMDA1MjYxNjEzNTFaMDAxGTAXBgNVBAsTEHdm
+    Mjd6dzJtbndtaGdsMmgxEzARBgNVBAMTCnF1aWNrc3RhcnQwggEiMA0GCSqGSIb3
+    DQEBAQUAA4IBDwAwggEKAoIBAQDEHGhH1PBj0rymtqvnlOTVhcLOEVNEZvcA+1Lm
+    HqXZnvcyMwdUGt6wfZ/hxY5Mdd4OddLAg3WkaNm0hqHCX1stveInEjO+7DSbW4qZ
+    Il53Uio4hicLrZDNa/bT36oX/EAAXgVuiYcn5VNDLCXgM/x8QHcGFWJTL/2T4V+F
+    aItYWmHIU+jc865Ol8qG6+P0cTWE0aysa9BbchPEqr5wOzZO/RxjDtTLWYrg6xRJ
+    IFs6SlQHOsYkzfKizmgoCLOXUEITgexxNIJzQkUq/jxnIhNVv2mnh7UIDdcNqH9F
+    emfB8UuWibJKTGCrYlpI4PbUZaP3nZpNo9gfrsBqvTg38Ol/AgMBAAGjQjBAMA4G
+    A1UdDwEB/wQEAwIChDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDwYD
+    VR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAGxRblTxiYZgbiQZTZ1dj
+    vYEYsrYX4Zv3iJrTwwShjO9GjnH2E1W//saLBsFWxwsQ6apADcQdf9YZb4i1cYyS
+    IEBm+kzUtFRKQlnq7bnVqWOdyo4jUr7/rXy0BWpM21+eEKbzRFUlAEtrJRsCE5ZU
+    Ld3Oej6a0UUXzQkVteUpl4drQw5vS2cHUK0KEDuJX7D95CepWJ9WmZVNYdT0z85n
+    UElc601kfU1+5SvhyjPx6eRYHZshXWpwMySwukpr+bp5xYvau2CU+m8feldiKwxe
+    VpfUYhEc4X7aY+WiTra5rGXAbiwN9g4L35S6k0lDSUWYnnB7Dfodn0gJuscLEF8V
+    vQ==
+    -----END CERTIFICATE-----
+---
+# Allow customizing fluentd configs
+# todo: add */conf.d/* additional configs
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluentd-agent-config
+  namespace: default
+  labels:
+    k8s-app: fluentd-logging
+data:
+  fluent.conf: |-
+    # Custom fluent.conf
+    @include "#{ENV['FLUENTD_SYSTEMD_CONF'] || 'systemd'}.conf"
+    @include "#{ENV['FLUENTD_PROMETHEUS_CONF'] || 'prometheus'}.conf"
+    @include kubernetes.conf
+    @include conf.d/*.conf
+
+    <match **>
+      @type elasticsearch
+      @id out_es
+      @log_level info
+      include_tag_key true
+      host "#{ENV['FLUENT_ELASTICSEARCH_HOST']}"
+      port "#{ENV['FLUENT_ELASTICSEARCH_PORT']}"
+      path "#{ENV['FLUENT_ELASTICSEARCH_PATH']}"
+      scheme "#{ENV['FLUENT_ELASTICSEARCH_SCHEME'] || 'http'}"
+      ssl_verify "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERIFY'] || 'true'}"
+      ssl_version "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERSION'] || 'TLSv1'}"
+      user "#{ENV['FLUENT_ELASTICSEARCH_USER']}"
+      password "#{ENV['FLUENT_ELASTICSEARCH_PASSWORD']}"
+      reload_connections "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_CONNECTIONS'] || 'false'}"
+      reconnect_on_error "#{ENV['FLUENT_ELASTICSEARCH_RECONNECT_ON_ERROR'] || 'true'}"
+      reload_on_failure "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_ON_FAILURE'] || 'true'}"
+      logstash_prefix "#{ENV['FLUENT_ELASTICSEARCH_LOGSTASH_PREFIX'] || 'logstash'}"
+      logstash_format "#{ENV['FLUENT_ELASTICSEARCH_LOGSTASH_FORMAT'] || 'true'}"
+      index_name "#{ENV['FLUENT_ELASTICSEARCH_LOGSTASH_INDEX_NAME'] || 'logstash'}"
+      type_name "#{ENV['FLUENT_ELASTICSEARCH_LOGSTASH_TYPE_NAME'] || 'fluentd'}"
+      <buffer>
+        flush_thread_count "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_THREAD_COUNT'] || '8'}"
+        flush_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_INTERVAL'] || '5s'}"
+        chunk_limit_size "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_CHUNK_LIMIT_SIZE'] || '2M'}"
+        queue_limit_length "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_QUEUE_LIMIT_LENGTH'] || '32'}"
+        retry_max_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_RETRY_MAX_INTERVAL'] || '30'}"
+        retry_forever true
+      </buffer>
+    </match>
 ---
 # Allow customizing fluentd configs
 # todo: add */conf.d/* additional configs
@@ -234,11 +329,11 @@ spec:
       - name: fluentd
         image: fluent/fluentd-kubernetes-daemonset:v1.4.2-debian-elasticsearch-1.0
         env:
-        # FLUENT_ELASTICSEARCH_LOGSTASH_INDEX_NAME
           - name: FLUENT_ELASTICSEARCH_LOGSTASH_INDEX_NAME
-            value: 'prod-kubernetes'
+            value: 'dev-kubernetes'
+            # specify the index name 
           - name: FLUENT_ELASTICSEARCH_LOGSTASH_PREFIX
-            value: 'prod-kubernetes'
+            value: 'dev-kubernetes'
           - name: FLUENT_ELASTICSEARCH_HOST
             value: quickstart-es
           - name: FLUENT_ELASTICSEARCH_PORT
@@ -246,17 +341,19 @@ spec:
           - name: FLUENT_ELASTICSEARCH_USER
             value: "elastic"
           - name: FLUENT_ELASTICSEARCH_PASSWORD
-            value: 4l522bbnn7z2s58nk9t7bkzf 
+            value: 4l522bbnn7z2s58nk9t7bkzf
+            # TODO: get this ^^ from the command line
           - name: FLUENT_ELASTICSEARCH_SCHEME
             value: "https"
           - name: FLUENT_ELASTICSEARCH_SSL_VERSION
             value: TLSv1_2
           - name: FLUENT_ELASTICSEARCH_SSL_VERIFY
-            value: "false"
-          # don't do this in production!! ^^
+            value: "true"
+          - name: SSL_CERT_FILE
+            value: "/etc/ssl/certs/certs.pem"
           - name: FLUENTD_SYSTEMD_CONF
             value: "disabled"
-          - name: FLUENTD_SYSTEMD_CONF
+          - name: FLUENTD_PROMETHEUS_CONF
             value: "disabled"
           - name: FLUENT_UID
             value: "0"
@@ -273,6 +370,10 @@ spec:
           mountPath: /fluentd/etc/kubernetes.conf
           readOnly: true
           subPath: kubernetes.conf
+        - name: agent-config
+          mountPath: /fluentd/etc/fluent.conf
+          readOnly: true
+          subPath: fluent.conf
         - name: varlog
           mountPath: /var/log
         - name: varlibdockercontainers
@@ -287,6 +388,10 @@ spec:
         configMap:
           defaultMode: 0600
           name: fluentd-kubernetes-config
+      - name: agent-config
+        configMap:
+          defaultMode: 0600
+          name: fluentd-agent-config
       - name: varlog
         hostPath:
           path: /var/log
