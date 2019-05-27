@@ -10,24 +10,24 @@ metadata:
 data:
   elastic-root.pem: |-
     -----BEGIN CERTIFICATE-----
-    MIIDLTCCAhWgAwIBAgIRALOA6qczzfBMwzJvT7KBEWowDQYJKoZIhvcNAQELBQAw
-    MDEZMBcGA1UECxMQbHc4bm40dzk0OWM4dHY2ejETMBEGA1UEAxMKcXVpY2tzdGFy
-    dDAeFw0xOTA1MjcxNTMzNDZaFw0yMDA1MjYxNTM0NDZaMDAxGTAXBgNVBAsTEGx3
-    OG5uNHc5NDljOHR2NnoxEzARBgNVBAMTCnF1aWNrc3RhcnQwggEiMA0GCSqGSIb3
-    DQEBAQUAA4IBDwAwggEKAoIBAQCzNK17PeKEN3Ik6hOm6JPi1LQdH3TutDe3yXQo
-    wb8V1c+6KSXkk7j0o5faGyqx57OZkC/yMhUWIZem/FwvaJt/h0kXKWor8QJ4w1UG
-    4ev6pr/e5MFpuNIBZ3P213UWHQ5ToxZ1vHMxzQoXoWOt9NBAJLYi2/y7eJj7KRRc
-    DdkA7uRHXmJ/0WXjNrJs224RukhVKCJIFSNJ5qxLIoMbTQ0ox/malslDsOg3NVee
-    OfaOAOuf4XirCgTaWjpB6GNRdXn7tdvziwFqxC27IMxXz+Plo9KMV96KUReSjLne
-    UW1fw07nzFkMjIakJk+EPEjOlT4qSejPz6/lkgRL4jPCqRJBAgMBAAGjQjBAMA4G
+    MIIDLTCCAhWgAwIBAgIRAMd5C1xJtm3W6k+3NRKH8b0wDQYJKoZIhvcNAQELBQAw
+    MDEZMBcGA1UECxMQd2YyN3p3Mm1ud21oZ2wyaDETMBEGA1UEAxMKcXVpY2tzdGFy
+    dDAeFw0xOTA1MjcxNjEyNTFaFw0yMDA1MjYxNjEzNTFaMDAxGTAXBgNVBAsTEHdm
+    Mjd6dzJtbndtaGdsMmgxEzARBgNVBAMTCnF1aWNrc3RhcnQwggEiMA0GCSqGSIb3
+    DQEBAQUAA4IBDwAwggEKAoIBAQDEHGhH1PBj0rymtqvnlOTVhcLOEVNEZvcA+1Lm
+    HqXZnvcyMwdUGt6wfZ/hxY5Mdd4OddLAg3WkaNm0hqHCX1stveInEjO+7DSbW4qZ
+    Il53Uio4hicLrZDNa/bT36oX/EAAXgVuiYcn5VNDLCXgM/x8QHcGFWJTL/2T4V+F
+    aItYWmHIU+jc865Ol8qG6+P0cTWE0aysa9BbchPEqr5wOzZO/RxjDtTLWYrg6xRJ
+    IFs6SlQHOsYkzfKizmgoCLOXUEITgexxNIJzQkUq/jxnIhNVv2mnh7UIDdcNqH9F
+    emfB8UuWibJKTGCrYlpI4PbUZaP3nZpNo9gfrsBqvTg38Ol/AgMBAAGjQjBAMA4G
     A1UdDwEB/wQEAwIChDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDwYD
-    VR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEATqZyP++ZnowlvCdF8m2d
-    BPySeVFaLR908aUKusqdP1fyuEWBF8OY+6eCe8Qqf0YviZuVrDvs8aid6ZvHI/H6
-    nztdgSKTKRmsh+BewzLOzwQcZJGyHMReCSZLfz3/9gYYl0tni4Gch12+SqidWHhR
-    GhKTJZhMTWN2WVzFN568tqKCrXa7s5RHcl74vHu90NAeHRbbe49Z0pTXiIr2YC8J
-    mpqi7Mj1MJnptu9DA2wu2abDKOrUIHRPI3JdHp1Ykv4zI6t/ht974zpErFeTdadI
-    tuu8DCrKWD7Yjqwt9kiEt4cdL5fAh/mkLCtFasSHrVFaiNBPSFmynbj8hwDMx6ol
-    Ew==
+    VR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAGxRblTxiYZgbiQZTZ1dj
+    vYEYsrYX4Zv3iJrTwwShjO9GjnH2E1W//saLBsFWxwsQ6apADcQdf9YZb4i1cYyS
+    IEBm+kzUtFRKQlnq7bnVqWOdyo4jUr7/rXy0BWpM21+eEKbzRFUlAEtrJRsCE5ZU
+    Ld3Oej6a0UUXzQkVteUpl4drQw5vS2cHUK0KEDuJX7D95CepWJ9WmZVNYdT0z85n
+    UElc601kfU1+5SvhyjPx6eRYHZshXWpwMySwukpr+bp5xYvau2CU+m8feldiKwxe
+    VpfUYhEc4X7aY+WiTra5rGXAbiwN9g4L35S6k0lDSUWYnnB7Dfodn0gJuscLEF8V
+    vQ==
     -----END CERTIFICATE-----
 ---
 # Allow customizing fluentd configs
@@ -234,6 +234,11 @@ spec:
       - name: fluentd
         image: fluent/fluentd-kubernetes-daemonset:v1.4.2-debian-elasticsearch-1.0
         env:
+        # FLUENT_ELASTICSEARCH_LOGSTASH_INDEX_NAME
+          - name: FLUENT_ELASTICSEARCH_LOGSTASH_INDEX_NAME
+            value: 'prod-kubernetes'
+          - name: FLUENT_ELASTICSEARCH_LOGSTASH_PREFIX
+            value: 'prod-kubernetes'
           - name: FLUENT_ELASTICSEARCH_HOST
             value: quickstart-es
           - name: FLUENT_ELASTICSEARCH_PORT
@@ -241,7 +246,7 @@ spec:
           - name: FLUENT_ELASTICSEARCH_USER
             value: "elastic"
           - name: FLUENT_ELASTICSEARCH_PASSWORD
-            value: 8n9cmmfpqt8hrv48l626rh65 
+            value: 4l522bbnn7z2s58nk9t7bkzf 
           - name: FLUENT_ELASTICSEARCH_SCHEME
             value: "https"
           - name: FLUENT_ELASTICSEARCH_SSL_VERSION
