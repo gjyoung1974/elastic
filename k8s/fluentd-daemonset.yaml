@@ -93,7 +93,7 @@ data:
     @include "#{ENV['FLUENTD_PROMETHEUS_CONF'] || 'prometheus'}.conf"
     @include kubernetes.conf
     @include nodes.conf
-    @include conf.d/*.conf
+    # @include conf.d/*.conf
 
     <match **>
       @type elasticsearch
@@ -315,22 +315,20 @@ metadata:
     k8s-app: fluentd-logging
 data:
   nodes.conf: |-
-    <match **.**>
+    <match fluent.**>
       @type null
     </match>
 
     <source>
       @type tail
-      @id in_tail_linux_logs
       path /var/log/vmware-vmsvc.log
-      pos_file /var/log/vmware-vmsvc.log.log.pos
-      tag linux.*
-      read_from_head true
+      pos_file /var/log/vmware-vmsvc.log.pos
       <parse>
-        @type json
-        time_format %Y-%m-%dT%H:%M:%S.%NZ
+        @type syslog
       </parse>
+      tag vmware.vmsvc.stuff
     </source>
+
 ---
 apiVersion: extensions/v1beta1
 kind: DaemonSet
