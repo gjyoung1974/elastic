@@ -1,6 +1,5 @@
 ---
-# Trust the Elastic Cloud Root CA
-# Include the full chain
+# Trust the Elastic Cloud cert chain 
 apiVersion: v1
 kind: ConfigMap
 metadata:
