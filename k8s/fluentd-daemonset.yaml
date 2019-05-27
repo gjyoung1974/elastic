@@ -304,6 +304,8 @@ data:
       @id filter_kube_metadata
     </filter>
 ---
+# Allow customizing fluentd configs
+# todo: add */conf.d/* additional configs
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -313,7 +315,22 @@ metadata:
     k8s-app: fluentd-logging
 data:
   nodes.conf: |-
-    this is a test
+    <match **.**>
+      @type null
+    </match>
+
+    <source>
+      @type tail
+      @id in_tail_linux_logs
+      path /var/log/vmware-vmsvc.log
+      pos_file /var/log/vmware-vmsvc.log.log.pos
+      tag linux.*
+      read_from_head true
+      <parse>
+        @type json
+        time_format %Y-%m-%dT%H:%M:%S.%NZ
+      </parse>
+    </source>
 ---
 apiVersion: extensions/v1beta1
 kind: DaemonSet
@@ -384,6 +401,7 @@ spec:
         - name: agent-config
           mountPath: /fluentd/etc/fluent.conf
           readOnly: true
+          subPath: fluent.conf
         - name: nodes-config
           mountPath: /fluentd/etc/nodes.conf
           readOnly: true
@@ -402,14 +420,14 @@ spec:
         configMap:
           defaultMode: 0600
           name: fluentd-kubernetes-config
-      - name: nodes-config
-        configMap:
-          defaultMode: 0600
-          name: fluentd-nodes-config
       - name: agent-config
         configMap:
           defaultMode: 0600
           name: fluentd-agent-config
+      - name: nodes-config
+        configMap:
+          defaultMode: 0600
+          name: fluentd-nodes-config
       - name: varlog
         hostPath:
           path: /var/log
