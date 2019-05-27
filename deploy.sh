@@ -1,7 +1,9 @@
 #!/bin/bash
 
-kubectl apply -f ./all-in-one.yaml
+# 1. deploy a stand alone elastic operator into minikube
+kubectl apply -f ./all-in-one-EFK-dev-cluster.yaml
 
+# 2. deploy an Elasticsearch quickstart into minikube
 cat <<EOF | kubectl apply -f -
 apiVersion: elasticsearch.k8s.elastic.co/v1alpha1
 kind: Elasticsearch
@@ -17,8 +19,7 @@ spec:
       node.ingest: true
 EOF
 
-#
-
+# 3. deploy an Kibana quickstart into minikube
 cat <<EOF | kubectl apply -f -
 apiVersion: kibana.k8s.elastic.co/v1alpha1
 kind: Kibana
@@ -31,6 +32,7 @@ spec:
     name: quickstart
 EOF
 
+# 4. get password and open Kibana dashboard
 echo "sleeping 2 minutes, then opening Kibana"
 sleep 120s
 
@@ -39,5 +41,3 @@ PASSWORD=$(kubectl get secret quickstart-elastic-user -o=jsonpath='{.data.elasti
 echo "username is: elastic" 
 echo "password is:" $PASSWORD
 minikube service quickstart-kibana-ex
-
-
