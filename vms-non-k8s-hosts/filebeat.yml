@@ -37,7 +37,7 @@ output.elasticsearch:
   # hosts: ["localhost:9200"]
   hosts: ["https://192.168.64.3:31364"]
   username: "elastic"
-  password: "wg5ddkt5fxkbhqzz6hqxdv9h"
+  password: "-"
   ssl.certificate_authorities: ["/etc/filebeat/ca.pem"]
   ssl.verification_mode: "none" # don't do this in production (or even preprod) <<
   # Optional protocol and basic auth credentials.

@@ -84,7 +84,7 @@ spec:
         - name: ELASTICSEARCH_USERNAME
           value: elastic
         - name: ELASTICSEARCH_PASSWORD
-          value: tz8gnpnmz6lp54x78qqcr2bt 
+          value: - 
         # env:
         # - name: ELASTICSEARCH_HOST
         #   value: elasticsearch

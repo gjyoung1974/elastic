@@ -1,0 +1,467 @@
+---
+# Allow customizing fluentd configs
+# todo: add */conf.d/* additional configs
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluentd-agent-config
+  namespace: default
+  labels:
+    k8s-app: fluentd-logging
+data:
+  fluent.conf: |-
+    # Custom fluent.conf
+    @include "#{ENV['FLUENTD_SYSTEMD_CONF'] || 'systemd'}.conf"
+    @include "#{ENV['FLUENTD_PROMETHEUS_CONF'] || 'prometheus'}.conf"
+    @include kubernetes.conf
+    @include nodes.conf
+    # @include conf.d/*.conf
+
+    <match **>
+      @type elasticsearch
+      @id out_es
+      @log_level info
+      include_tag_key true
+      host "#{ENV['FLUENT_ELASTICSEARCH_HOST']}"
+      port "#{ENV['FLUENT_ELASTICSEARCH_PORT']}"
+      path "#{ENV['FLUENT_ELASTICSEARCH_PATH']}"
+      scheme "#{ENV['FLUENT_ELASTICSEARCH_SCHEME'] || 'http'}"
+      ssl_verify "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERIFY'] || 'true'}"
+      ssl_version "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERSION'] || 'TLSv1'}"
+      user "#{ENV['FLUENT_ELASTICSEARCH_USER']}"
+      password "#{ENV['FLUENT_ELASTICSEARCH_PASSWORD']}"
+      reload_connections "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_CONNECTIONS'] || 'false'}"
+      reconnect_on_error "#{ENV['FLUENT_ELASTICSEARCH_RECONNECT_ON_ERROR'] || 'true'}"
+      reload_on_failure "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_ON_FAILURE'] || 'true'}"
+      logstash_prefix "#{ENV['FLUENT_ELASTICSEARCH_LOGSTASH_PREFIX'] || 'logstash'}"
+      logstash_format "#{ENV['FLUENT_ELASTICSEARCH_LOGSTASH_FORMAT'] || 'true'}"
+      index_name "#{ENV['FLUENT_ELASTICSEARCH_LOGSTASH_INDEX_NAME'] || 'logstash'}"
+      type_name "#{ENV['FLUENT_ELASTICSEARCH_LOGSTASH_TYPE_NAME'] || 'fluentd'}"
+      <buffer>
+        flush_thread_count "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_THREAD_COUNT'] || '8'}"
+        flush_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_INTERVAL'] || '5s'}"
+        chunk_limit_size "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_CHUNK_LIMIT_SIZE'] || '2M'}"
+        queue_limit_length "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_QUEUE_LIMIT_LENGTH'] || '32'}"
+        retry_max_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_RETRY_MAX_INTERVAL'] || '30'}"
+        retry_forever true
+      </buffer>
+    </match>
+---
+# Allow customizing fluentd configs
+# todo: add */conf.d/* additional configs
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluentd-kubernetes-config
+  namespace: default
+  labels:
+    k8s-app: fluentd-logging
+data:
+  kubernetes.conf: |-
+    # custom kubernetes.conf <<
+    <match fluent.**>
+      @type null
+    </match>
+
+    <source>
+      @type tail
+      @id in_tail_container_logs
+      path /var/log/containers/*.log
+      pos_file /var/log/fluentd-containers.log.pos
+      tag kubernetes.*
+      read_from_head true
+      <parse>
+        @type json
+        time_format %Y-%m-%dT%H:%M:%S.%NZ
+      </parse>
+    </source>
+
+    <source>
+      @type tail
+      @id in_tail_startupscript
+      path /var/log/startupscript.log
+      pos_file /var/log/fluentd-startupscript.log.pos
+      tag startupscript
+      <parse>
+        @type syslog
+      </parse>
+    </source>
+
+    <source>
+      @type tail
+      @id in_tail_docker
+      path /var/log/docker.log
+      pos_file /var/log/fluentd-docker.log.pos
+      tag docker
+      <parse>
+        @type regexp
+        expression /^time="(?<time>[^)]*)" level=(?<severity>[^ ]*) msg="(?<message>[^"]*)"( err="(?<error>[^"]*)")?( statusCode=($<status_code>\d+))?/
+      </parse>
+    </source>
+
+    <source>
+      @type tail
+      @id in_tail_etcd
+      path /var/log/etcd.log
+      pos_file /var/log/fluentd-etcd.log.pos
+      tag etcd
+      <parse>
+        @type none
+      </parse>
+    </source>
+
+    <source>
+      @type tail
+      @id in_tail_kubelet
+      multiline_flush_interval 5s
+      path /var/log/kubelet.log
+      pos_file /var/log/fluentd-kubelet.log.pos
+      tag kubelet
+      <parse>
+        @type kubernetes
+      </parse>
+    </source>
+
+    <source>
+      @type tail
+      @id in_tail_kube_proxy
+      multiline_flush_interval 5s
+      path /var/log/kube-proxy.log
+      pos_file /var/log/fluentd-kube-proxy.log.pos
+      tag kube-proxy
+      <parse>
+        @type kubernetes
+      </parse>
+    </source>
+
+    <source>
+      @type tail
+      @id in_tail_kube_apiserver
+      multiline_flush_interval 5s
+      path /var/log/kube-apiserver.log
+      pos_file /var/log/fluentd-kube-apiserver.log.pos
+      tag kube-apiserver
+      <parse>
+        @type kubernetes
+      </parse>
+    </source>
+
+    <source>
+      @type tail
+      @id in_tail_kube_controller_manager
+      multiline_flush_interval 5s
+      path /var/log/kube-controller-manager.log
+      pos_file /var/log/fluentd-kube-controller-manager.log.pos
+      tag kube-controller-manager
+      <parse>
+        @type kubernetes
+      </parse>
+    </source>
+
+    <source>
+      @type tail
+      @id in_tail_kube_scheduler
+      multiline_flush_interval 5s
+      path /var/log/kube-scheduler.log
+      pos_file /var/log/fluentd-kube-scheduler.log.pos
+      tag kube-scheduler
+      <parse>
+        @type kubernetes
+      </parse>
+    </source>
+
+    <source>
+      @type tail
+      @id in_tail_rescheduler
+      multiline_flush_interval 5s
+      path /var/log/rescheduler.log
+      pos_file /var/log/fluentd-rescheduler.log.pos
+      tag rescheduler
+      <parse>
+        @type kubernetes
+      </parse>
+    </source>
+
+    <source>
+      @type tail
+      @id in_tail_glbc
+      multiline_flush_interval 5s
+      path /var/log/glbc.log
+      pos_file /var/log/fluentd-glbc.log.pos
+      tag glbc
+      <parse>
+        @type kubernetes
+      </parse>
+    </source>
+
+    <source>
+      @type tail
+      @id in_tail_cluster_autoscaler
+      multiline_flush_interval 5s
+      path /var/log/cluster-autoscaler.log
+      pos_file /var/log/fluentd-cluster-autoscaler.log.pos
+      tag cluster-autoscaler
+      <parse>
+        @type kubernetes
+      </parse>
+    </source>
+
+    <source>
+      @type tail
+      @id in_tail_kube_apiserver_audit
+      multiline_flush_interval 5s
+      path /var/log/kubernetes/kube-apiserver-audit.log
+      pos_file /var/log/kube-apiserver-audit.log.pos
+      tag kube-apiserver-audit
+      <parse>
+        @type multiline
+        format_firstline /^\S+\s+AUDIT:/
+        format1 /^(?<time>\S+) AUDIT:(?: (?:id="(?<id>(?:[^"\\]|\\.)*)"|ip="(?<ip>(?:[^"\\]|\\.)*)"|method="(?<method>(?:[^"\\]|\\.)*)"|user="(?<user>(?:[^"\\]|\\.)*)"|groups="(?<groups>(?:[^"\\]|\\.)*)"|as="(?<as>(?:[^"\\]|\\.)*)"|asgroups="(?<asgroups>(?:[^"\\]|\\.)*)"|namespace="(?<namespace>(?:[^"\\]|\\.)*)"|uri="(?<uri>(?:[^"\\]|\\.)*)"|response="(?<response>(?:[^"\\]|\\.)*)"|\w+="(?:[^"\\]|\\.)*"))*/
+        time_format %Y-%m-%dT%T.%L%Z
+      </parse>
+    </source>
+
+    <filter kubernetes.**>
+      @type kubernetes_metadata
+      @id filter_kube_metadata
+    </filter>
+---
+# Capture node security relevant logs
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluentd-nodes-config
+  namespace: default
+  labels:
+    k8s-app: fluentd-logging
+data:
+  nodes.conf: |-
+    <match fluent.**>
+      @type null
+    </match>
+
+    # auth log
+    <source> 
+      @type tail 
+      path /var/log/auth.log 
+      pos_file /var/log/auth.pos 
+      tag authlog
+      <parse>
+        @type syslog
+        message_format rfc3164
+        with_priority false
+      </parse>
+    </source>
+
+    # daemon log
+    <source> 
+      @type tail 
+      path /var/log/daemon.log
+      pos_file /var/log/daemon.log.pos 
+      tag daemonlog
+      <parse>
+        @type syslog
+        message_format rfc3164
+        with_priority false
+      </parse>
+    </source>
+
+    # debug log
+    <source> 
+      @type tail 
+      path /var/log/debug
+      pos_file /var/log/debug.pos 
+      tag debuglog
+      <parse>
+        @type syslog
+        message_format rfc3164
+        with_priority false
+      </parse>
+    </source>
+
+    # kernel log
+    <source> 
+      @type tail
+      path /var/log/kern.log
+      pos_file /var/log/kern.log.pos 
+      tag kernellog
+      <parse>
+        @type syslog
+        message_format rfc3164
+        with_priority false
+      </parse>
+    </source>
+
+    # system log
+    <source> 
+      @type tail
+      path  /var/log/syslog
+      pos_file  /var/log/syslog.pos 
+      tag syslog
+      <parse>
+        @type syslog
+        message_format rfc3164
+        with_priority false
+      </parse>
+    </source>
+
+---
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: fluentd
+  labels:
+    k8s-app: fluentd-logging
+    version: v1
+    kubernetes.io/cluster-service: "true"
+spec:
+  template:
+    metadata:
+      labels:
+        k8s-app: fluentd-logging
+        version: v1
+        kubernetes.io/cluster-service: "true"
+    spec:
+      serviceAccount: fluentd
+      serviceAccountName: fluentd
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+      containers:
+      - name: fluentd
+        image: fluent/fluentd-kubernetes-daemonset:v1.4.2-debian-elasticsearch-1.0
+        env:
+          - name: FLUENT_ELASTICSEARCH_LOGSTASH_INDEX_NAME
+            value: 'gordon-minikube'
+            # specify the index name 
+          - name: FLUENT_ELASTICSEARCH_LOGSTASH_PREFIX
+            value: 'gordon-minikube'
+          - name: FLUENT_ELASTICSEARCH_HOST
+            value: ""
+          - name: FLUENT_ELASTICSEARCH_PORT
+            value: '9243'
+          - name: FLUENT_ELASTICSEARCH_USER
+            value: "elastic"
+          - name: FLUENT_ELASTICSEARCH_PASSWORD
+            value: ""
+            # TODO: get this ^^ from the command line
+          - name: FLUENT_ELASTICSEARCH_SCHEME
+            value: "https"
+          - name: FLUENT_ELASTICSEARCH_SSL_VERSION
+            value: TLSv1_2
+          - name: FLUENT_ELASTICSEARCH_SSL_VERIFY
+            value: "true"
+          # - name: SSL_CERT_FILE
+          #   value: "/etc/ssl/certs/certs.pem"
+          - name: FLUENTD_SYSTEMD_CONF
+            value: "disabled"
+          - name: FLUENTD_PROMETHEUS_CONF
+            value: "disabled"
+          - name: FLUENT_UID
+            value: "0"
+          - name: FLUENT_ELASTICSEARCH_SED_DISABLE
+            value: "true"
+        resources:
+          limits:
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 200Mi
+        volumeMounts:
+        - name: config
+          mountPath: /fluentd/etc/kubernetes.conf
+          readOnly: true
+          subPath: kubernetes.conf
+        - name: agent-config
+          mountPath: /fluentd/etc/fluent.conf
+          readOnly: true
+          subPath: fluent.conf
+        - name: nodes-config
+          mountPath: /fluentd/etc/nodes.conf
+          readOnly: true
+          subPath: nodes.conf
+        - name: varlog
+          mountPath: /var/log
+        - name: varlibdockercontainers
+          mountPath: /var/lib/docker/containers
+          readOnly: true
+        # - name: elastic-cloud-ca-cert
+        #   mountPath: "/etc/ssl/certs"
+        #   readOnly: true
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: config
+        configMap:
+          defaultMode: 0600
+          name: fluentd-kubernetes-config
+      - name: agent-config
+        configMap:
+          defaultMode: 0600
+          name: fluentd-agent-config
+      - name: nodes-config
+        configMap:
+          defaultMode: 0600
+          name: fluentd-nodes-config
+      - name: varlog
+        hostPath:
+          path: /var/log
+      - name: varlibdockercontainers
+        hostPath:
+          path: /var/lib/docker/containers
+      # - name: elastic-cloud-ca-cert
+      #   configMap:
+      #     defaultMode: 0600
+      #     name: elastic-cloud-ca-cert
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: fluentd
+subjects:
+- kind: ServiceAccount
+  name: fluentd
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: fluentd
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: fluentd
+  namespace: default
+  labels:
+    k8s-app: fluentd
+rules:
+- apiGroups: [""]
+  resources:
+  - nodes
+  - namespaces
+  - events
+  - pods
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["extensions"]
+  resources:
+  - replicasets
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps"]
+  resources:
+  - statefulsets
+  - deployments
+  verbs: ["get", "list", "watch"]
+- apiGroups:
+  - ""
+  resources:
+  - nodes/stats
+  verbs:
+  - get
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: fluentd
+  namespace: default
+  labels:
+    k8s-app: fluentd
+---
