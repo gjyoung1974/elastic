@@ -28,13 +28,13 @@ spec:
           value: "gordon-minikube"
         # cloud instance details:
         - name: FLUENT_ELASTICSEARCH_HOST
-          value: "294aa5383d0042a3a4b0ea7fe1c5adc9.us-west-2.aws.found.io"
+          value: "some-instance.us-west-2.aws.found.io"
         - name: FLUENT_ELASTICSEARCH_PORT
           value: "9243"
         - name: FLUENT_ELASTICSEARCH_USER
           value: "elastic"
         - name: FLUENT_ELASTICSEARCH_PASSWORD
-          value: "a3OiBQI43VKL4PeLuYW1OZGL"
+          value: "some password"
         # force TLS & cert verification on
         - name: FLUENT_ELASTICSEARCH_TLS_ON
           value: "On"
