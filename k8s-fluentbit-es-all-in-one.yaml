@@ -1,4 +1,9 @@
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: logging
+---
 apiVersion: extensions/v1beta1
 kind: DaemonSet
 metadata:
@@ -21,20 +26,21 @@ spec:
         image: fluent/fluent-bit:1.1.1
         imagePullPolicy: Always
         env:
-        # Name our index something useful:
+        # Name our ElasticSearch index something useful >>:
         - name: FLUENT_LOGSTASH_PREFIX
           value: "gordon-minikube"
         - name: FLUENT_ELASTICSEARCH_INDEX
           value: "gordon-minikube"
+        # Name our ElasticSearch index something useful ^^
         # cloud instance details:
         - name: FLUENT_ELASTICSEARCH_HOST
-          value: "some-instance.us-west-2.aws.found.io"
+          value: "294aa5383d0042a3a4b0ea7fe1c5adc9.us-west-2.aws.found.io"
         - name: FLUENT_ELASTICSEARCH_PORT
           value: "9243"
         - name: FLUENT_ELASTICSEARCH_USER
           value: "elastic"
         - name: FLUENT_ELASTICSEARCH_PASSWORD
-          value: "some password"
+          value: "a3OiBQI43VKL4PeLuYW1OZGL"
         # force TLS & cert verification on
         - name: FLUENT_ELASTICSEARCH_TLS_ON
           value: "On"
@@ -51,6 +57,9 @@ spec:
         - name: mnt
           mountPath: /mnt
           readOnly: true
+        # - name: secrets
+        #   mountPath: "/fluent-bit/etc/.env"
+        #   subPath: .env
       terminationGracePeriodSeconds: 10
       volumes:
       - name: varlog
@@ -65,6 +74,9 @@ spec:
       - name: mnt
         hostPath:
           path: /mnt
+      - name: secrets
+        secret:
+          secretName: fluent-bit-secrets
       serviceAccountName: fluent-bit
       tolerations:
       - key: node-role.kubernetes.io/master
@@ -199,3 +211,15 @@ subjects:
 - kind: ServiceAccount
   name: fluent-bit
   namespace: logging
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: fluent-bit-secrets
+  namespace: logging
+type: Opaque
+stringData:
+  .env: |-
+    FLUENT_ELASTICSEARCH_HOST=somehost
+    FLUENT_ELASTICSEARCH_PASSWORD=somepass
+---
