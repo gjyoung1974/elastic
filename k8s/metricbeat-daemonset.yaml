@@ -24,8 +24,8 @@ data:
     processors:
       - add_cloud_metadata:
 
-    cloud.id: dev-west-sec01
-    cloud.auth: dXMtd2VzdC0yLmF3cy5mb3VuZC5pbyQyOTRhYTUzODNkMDA0MmEzYTRiMGVhN2ZlMWM1YWRjOSQ1OGFkYmIxMzE3MTI0YWIzOTYyYzVjMGZhOGZhNjNhZA==
+    cloud.id: ${cloud_id}
+    cloud.auth: ${cloud_auth}
 
     output.elasticsearch:
       hosts: ['${ELASTICSEARCH_HOST:elasticsearch}:${ELASTICSEARCH_PORT:9200}']
@@ -107,13 +107,13 @@ spec:
         ]
         env:
         - name: ELASTICSEARCH_HOST
-          value: "https://294aa5383d0042a3a4b0ea7fe1c5adc9.us-west-2.aws.found.io"
+          value: ${ELASTICSEARCH_HOST}
         - name: ELASTICSEARCH_PORT
           value: "9432"
         - name: ELASTICSEARCH_USERNAME
           value: elastic
         - name: ELASTICSEARCH_PASSWORD
-          value: "a3OiBQI43VKL4PeLuYW1OZGL"
+          value: ${ELASTICSEARCH_PASSWORD}
         # - name: ELASTIC_CLOUD_ID
         #   value:
         # - name: ELASTIC_CLOUD_AUTH
