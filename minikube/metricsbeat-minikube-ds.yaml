@@ -30,7 +30,7 @@ data:
     output.elasticsearch:
       hosts: ['${ELASTICSEARCH_HOST:elasticsearch}:${ELASTICSEARCH_PORT:9200}']
       username: elastic
-      password: 2zkfbllg4qcdw7wrjpwqw84h
+      password: ${ELASTICSEARCH_PASSWORD}
       ssl.verification_mode: "none"
       #ssl.certificate_authorities: ["/tmp/root/ca.pem"]
 ---
@@ -114,7 +114,7 @@ spec:
         - name: ELASTICSEARCH_USERNAME
           value: elastic
         - name: ELASTICSEARCH_PASSWORD
-          value: 2zkfbllg4qcdw7wrjpwqw84h
+          value:  ${ELASTICSEARCH_PASSWORD}
         # - name: ELASTIC_CLOUD_ID
         #   value:
         # - name: ELASTIC_CLOUD_AUTH
@@ -194,7 +194,7 @@ data:
     output.elasticsearch:
       hosts: ['${ELASTICSEARCH_HOST:elasticsearch}:${ELASTICSEARCH_PORT:9200}']
       username: elastic
-      password: 2zkfbllg4qcdw7wrjpwqw84h
+      password: ${ELASTICSEARCH_PASSWORD}
       ssl.verification_mode: "none"
 ---
 apiVersion: v1
@@ -252,11 +252,7 @@ spec:
         - name: ELASTICSEARCH_USERNAME
           value: elastic
         - name: ELASTICSEARCH_PASSWORD
-          value: 2zkfbllg4qcdw7wrjpwqw84h
-        # - name: ELASTIC_CLOUD_ID
-        #   value:
-        # - name: ELASTIC_CLOUD_AUTH
-        #   value:
+          value: ${ELASTICSEARCH_PASSWORD}
         - name: NODE_NAME
           valueFrom:
             fieldRef:
