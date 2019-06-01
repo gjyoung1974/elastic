@@ -15,23 +15,23 @@ data:
       reload.enabled: false
 
     # To enable hints based autodiscover uncomment this:
-    #metricbeat.autodiscover:
-    #  providers:
-    #    - type: kubernetes
-    #      host: ${NODE_NAME}
-    #      hints.enabled: true
+    metricbeat.autodiscover:
+     providers:
+       - type: kubernetes
+         host: ${NODE_NAME}
+         hints.enabled: true
 
-    # processors:
-    #   - add_cloud_metadata:
+    processors:
+      - add_cloud_metadata:
 
-    # cloud.id: ${ELASTIC_CLOUD_ID}
-    # cloud.auth: ${ELASTIC_CLOUD_AUTH}
+    cloud.id: dev-west-sec01
+    cloud.auth: dXMtd2VzdC0yLmF3cy5mb3VuZC5pbyQyOTRhYTUzODNkMDA0MmEzYTRiMGVhN2ZlMWM1YWRjOSQ1OGFkYmIxMzE3MTI0YWIzOTYyYzVjMGZhOGZhNjNhZA==
 
     output.elasticsearch:
       hosts: ['${ELASTICSEARCH_HOST:elasticsearch}:${ELASTICSEARCH_PORT:9200}']
       username: ${ELASTICSEARCH_USERNAME}
       password: ${ELASTICSEARCH_PASSWORD}
-      ssl.certificate_authorities: ["/tmp/root/ca.pem"]
+      #ssl.certificate_authorities: ["/tmp/root/ca.pem"]
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -78,12 +78,6 @@ data:
       period: 10s
       host: ${NODE_NAME}
       hosts: ["localhost:10255"]
-      # If using Red Hat OpenShift remove the previous hosts entry and 
-      # uncomment these settings:
-      #hosts: ["https://${HOSTNAME}:10250"]
-      #bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-      #ssl.certificate_authorities:
-        #- /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
 ---
 # Deploy a Metricbeat instance per node for node metrics retrieval
 apiVersion: extensions/v1beta1
@@ -113,13 +107,13 @@ spec:
         ]
         env:
         - name: ELASTICSEARCH_HOST
-          value: "https://quickstart-es"
+          value: "https://294aa5383d0042a3a4b0ea7fe1c5adc9.us-west-2.aws.found.io"
         - name: ELASTICSEARCH_PORT
-          value: "9200"
+          value: "9432"
         - name: ELASTICSEARCH_USERNAME
           value: elastic
         - name: ELASTICSEARCH_PASSWORD
-          value: "2fv8276lvpk7rwth4txrpmb7"
+          value: "a3OiBQI43VKL4PeLuYW1OZGL"
         # - name: ELASTIC_CLOUD_ID
         #   value:
         # - name: ELASTIC_CLOUD_AUTH
@@ -152,9 +146,6 @@ spec:
         - name: cgroup
           mountPath: /hostfs/sys/fs/cgroup
           readOnly: true
-        - name: ca-pem
-          mountPath: "/tmp/root/"
-          readOnly: true
       volumes:
       - name: proc
         hostPath:
@@ -177,9 +168,6 @@ spec:
         hostPath:
           path: /var/lib/metricbeat-data
           type: DirectoryOrCreate
-      - name: ca-pem
-        secret:
-          secretName: quickstart-es-wbmvbn27rh-certs 
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -206,7 +194,6 @@ data:
       hosts: ['${ELASTICSEARCH_HOST:elasticsearch}:${ELASTICSEARCH_PORT:9200}']
       username: ${ELASTICSEARCH_USERNAME}
       password: ${ELASTICSEARCH_PASSWORD}
-      ssl.certificate_authorities: ["/tmp/root/ca.pem"]
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -257,13 +244,13 @@ spec:
         ]
         env:
         - name: ELASTICSEARCH_HOST
-          value: "https://quickstart-es"
+          value: "https://294aa5383d0042a3a4b0ea7fe1c5adc9.us-west-2.aws.found.io"
         - name: ELASTICSEARCH_PORT
-          value: "9200"
+          value: "9243"
         - name: ELASTICSEARCH_USERNAME
           value: elastic
         - name: ELASTICSEARCH_PASSWORD
-          value: 2fv8276lvpk7rwth4txrpmb7 
+          value: a3OiBQI43VKL4PeLuYW1OZGL 
         # - name: ELASTIC_CLOUD_ID
         #   value:
         # - name: ELASTIC_CLOUD_AUTH
@@ -281,9 +268,6 @@ spec:
             cpu: 100m
             memory: 100Mi
         volumeMounts:
-        - name: ca-pem
-          mountPath: "/tmp/root/"
-          readOnly: true
         - name: config
           mountPath: /etc/metricbeat.yml
           readOnly: true
@@ -300,9 +284,6 @@ spec:
         configMap:
           defaultMode: 0600
           name: metricbeat-deployment-modules
-      - name: ca-pem
-        secret:
-          secretName: quickstart-es-wbmvbn27rh-certs
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding

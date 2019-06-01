@@ -3,7 +3,7 @@ apiVersion: extensions/v1beta1
 kind: DaemonSet
 metadata:
   name: fluent-bit
-  namespace: logging
+  namespace: default
   labels:
     k8s-app: fluent-bit-logging
     version: v1
@@ -21,25 +21,26 @@ spec:
         image: fluent/fluent-bit:1.1.1
         imagePullPolicy: Always
         env:
-        # Name our index something useful:
+        # Name our ElasticSearch index something useful >>:
         - name: FLUENT_LOGSTASH_PREFIX
           value: "gordon-minikube"
         - name: FLUENT_ELASTICSEARCH_INDEX
           value: "gordon-minikube"
+        # Name our ElasticSearch index something useful ^^
         # cloud instance details:
         - name: FLUENT_ELASTICSEARCH_HOST
-          value: "some-instance.us-west-2.aws.found.io"
+          value: "quickstart-es"
         - name: FLUENT_ELASTICSEARCH_PORT
-          value: "9243"
+          value: "9200"
         - name: FLUENT_ELASTICSEARCH_USER
           value: "elastic"
         - name: FLUENT_ELASTICSEARCH_PASSWORD
-          value: "some password"
+          value: "2zkfbllg4qcdw7wrjpwqw84h"
         # force TLS & cert verification on
         - name: FLUENT_ELASTICSEARCH_TLS_ON
           value: "On"
         - name: FLUENT_ELASTICSEARCH_TLS_VERIFY
-          value: "On"
+          value: "Off"
         volumeMounts:
         - name: varlog
           mountPath: /var/log
@@ -51,6 +52,9 @@ spec:
         - name: mnt
           mountPath: /mnt
           readOnly: true
+        # - name: secrets
+        #   mountPath: "/fluent-bit/etc/.env"
+        #   subPath: .env
       terminationGracePeriodSeconds: 10
       volumes:
       - name: varlog
@@ -65,6 +69,9 @@ spec:
       - name: mnt
         hostPath:
           path: /mnt
+      - name: secrets
+        secret:
+          secretName: fluent-bit-secrets
       serviceAccountName: fluent-bit
       tolerations:
       - key: node-role.kubernetes.io/master
@@ -81,7 +88,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: fluent-bit-config
-  namespace: logging
+  namespace: default
   labels:
     k8s-app: fluent-bit
 data:
@@ -174,7 +181,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: fluent-bit
-  namespace: logging
+  namespace: default
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
@@ -198,4 +205,16 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: fluent-bit
-  namespace: logging
+  namespace: default
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: fluent-bit-secrets
+  namespace: default
+type: Opaque
+stringData:
+  .env: |-
+    FLUENT_ELASTICSEARCH_HOST=somehost
+    FLUENT_ELASTICSEARCH_PASSWORD=somepass
+---
