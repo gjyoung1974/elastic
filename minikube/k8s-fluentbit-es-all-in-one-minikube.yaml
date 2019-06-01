@@ -35,7 +35,7 @@ spec:
         - name: FLUENT_ELASTICSEARCH_USER
           value: "elastic"
         - name: FLUENT_ELASTICSEARCH_PASSWORD
-          value: "2zkfbllg4qcdw7wrjpwqw84h"
+          value: ${FLUENT_ELASTICSEARCH_PASSWORD}
         # force TLS & cert verification on
         - name: FLUENT_ELASTICSEARCH_TLS_ON
           value: "On"
