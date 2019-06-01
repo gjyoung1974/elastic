@@ -34,7 +34,11 @@ spec:
         # Name our ElasticSearch index something useful ^^
         # cloud instance details:
         - name: FLUENT_ELASTICSEARCH_HOST
+<<<<<<< HEAD:k8s/k8s-fluentbit-es-all-in-one.yaml
           value: "955b909d0f734adcbbcd7b7e4771c661.us-west-2.aws.found.io"
+=======
+          value: "some-host.us-west-2.aws.found.io"
+>>>>>>> 1faaee2ebd8b2cff6688af0de93e036667476130:k8s-fluentbit-es-all-in-one.yaml
         - name: FLUENT_ELASTICSEARCH_PORT
           value: "9243"
         - name: FLUENT_ELASTICSEARCH_USER
