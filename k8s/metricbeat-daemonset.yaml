@@ -244,13 +244,13 @@ spec:
         ]
         env:
         - name: ELASTICSEARCH_HOST
-          value: "https://294aa5383d0042a3a4b0ea7fe1c5adc9.us-west-2.aws.found.io"
+          value: ${ELASTICSEARCH_HOST}
         - name: ELASTICSEARCH_PORT
           value: "9243"
         - name: ELASTICSEARCH_USERNAME
           value: elastic
         - name: ELASTICSEARCH_PASSWORD
-          value: a3OiBQI43VKL4PeLuYW1OZGL 
+          value: ${ELASTICSEARCH_PASSWORD}
         # - name: ELASTIC_CLOUD_ID
         #   value:
         # - name: ELASTIC_CLOUD_AUTH
