@@ -21,18 +21,11 @@ data:
          host: ${NODE_NAME}
          hints.enabled: true
 
-    # processors:
-    #   - add_cloud_metadata:
-
-    # cloud.id: ${cloud_id}
-    # cloud.auth: ${cloud_auth}
-
     output.elasticsearch:
       hosts: ['${ELASTICSEARCH_HOST:elasticsearch}:${ELASTICSEARCH_PORT:9200}']
       username: elastic
       password: ${ELASTICSEARCH_PASSWORD}
       ssl.verification_mode: "none"
-      #ssl.certificate_authorities: ["/tmp/root/ca.pem"]
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -115,10 +108,6 @@ spec:
           value: elastic
         - name: ELASTICSEARCH_PASSWORD
           value:  ${ELASTICSEARCH_PASSWORD}
-        # - name: ELASTIC_CLOUD_ID
-        #   value:
-        # - name: ELASTIC_CLOUD_AUTH
-        #   value:
         - name: NODE_NAME
           valueFrom:
             fieldRef:
